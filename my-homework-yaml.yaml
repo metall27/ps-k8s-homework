@@ -1,0 +1,42 @@
+user:
+  admin: true
+  name: Ivan
+  age: 30
+  position: developer
+  skills:
+    - skill: Python
+      level: 5
+      description: |
+        The
+        biggest
+        master
+        of the
+        world
+    - skill: Java
+      level: 3
+      description: |
+        the
+        most
+        ordinary
+        programmer
+    - skill: yaml
+      level: 1
+      description: |
+        Junior
+        in
+        the
+        YAML
+        programming
+        language
+  address:
+    country: Russia
+    street: Lenina
+    house number: 1
+    apartment number: 1
+    city: Moscow
+    phone: 8-800-000-00-00
+  pets:
+    - name: Barsik
+      meowing: true
+      breed: Russian
+
