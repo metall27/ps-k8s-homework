@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-dp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      components: postgres
+  template:
+    metadata:
+      labels:
+        components: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:16
+        ports:
+          - containerPort: 5432
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: 500m
+        env:
+          - name: POSTGRES_PASSWORD
+            value: demo
+          - name: POSTGRES_USER
+            value: demo
+          - name: POSTGRES_DB
+            value: demo
+            
+            # valueFrom:
+            #   secretKeyRef:
+            #     name: postgres-secret
+            #     key: POSTGRES_PASSWORD
