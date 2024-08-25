@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: conv-app-svc
+  name: svc-conv-app
 spec:
   type: NodePort
   ports:
@@ -9,5 +9,5 @@ spec:
       targetPort: 80
       nodePort: 31119
   selector:
-    homework: conv-app
+    app: conv-app
 
