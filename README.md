@@ -1,1 +1,0 @@
-# ps-k8s-homework
