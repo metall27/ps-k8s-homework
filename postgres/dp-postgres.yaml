@@ -22,22 +22,26 @@ spec:
             memory: 512Mi
             cpu: 500m
         env:
-          - name: POSTGRES_PASSWORD
-            value: demo
           - name: POSTGRES_USER
-            value: demo
-          - name: POSTGRES_DB
-            value: demo
-            
-            # valueFrom:
-            #   secretKeyRef:
-            #     name: postgres-secret
-            #     key: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: POSTGRES_USER
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: POSTGRES_PASSWORD
+          - name: POSTGRES_DB      
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: POSTGRES_DB
         volumeMounts:
           - name: postgres-data
             mountPath: /var/lib/postgresql/data
             subPath: postgres
-    volumes:
-      - name: postgres-data
-        persistentVolumeClaim:
-          claimName: pvc-postgres
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: pvc-postgres
