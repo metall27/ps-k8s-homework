@@ -23,9 +23,17 @@ spec:
             cpu: 500m
         env:
           - name: SEED_USERNAME
-            value: username_seed
+            valueFrom:
+              secretKeyRef:
+                name: secret-rabbitmq
+                key: SEED_USERNAME
           - name: SEED_USER_PASSWORD
-            value: password_seed
+            valueFrom:
+              secretKeyRef:
+                name: secret-rabbitmq
+                key: SEED_USER_PASSWORD
+          # - name: auth_mechanisms.2
+          #   value: 'AMQPLAIN'
         volumeMounts:
           - name: rabbitmq-data
             mountPath: /var/lib/rabbitmq
