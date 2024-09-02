@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      components: frontend
+  template:
+    metadata:
+      labels:
+        components: frontend
+    spec:
+      containers:
+        - name: api
+          image: antonlarichev/api:v1.0
+          ports:
+            - containerPort: 3000
+          startupProbe:
+            exec:
+              command:
+                - curl
+                - --fail
+                - http://localhost:3000/api
+            periodSeconds: 10 # каждые 5 секунд делает запрос курлом
+            failureThreshold: 5 # 5 попыток
+          livenessProbe:
+            exec:
+              command:
+                - curl
+                - --fail
+                - http://localhost:3000/api
+            initialDelaySeconds: 30 # 30 секунд ниче делаем, ждем пока приложение иницаилизуется
+            periodSeconds: 5 # каждые 5 секунд делает запрос курлом
+            failureThreshold: 1 # допускается один неудачный запрос
+            
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "200m"
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: secret-api
+                  key: DATABASE_URL
+          volumeMounts:
+            - name: test
+              mountPath: /etc/test
+              readOnly: true
+      volumes:
+        - name: test
+          ConfigMap:
+            name: demo-config
