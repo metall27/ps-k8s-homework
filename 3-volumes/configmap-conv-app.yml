@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: converter-cm
+  namespace: default
+data:
+  VITE_DOMAIN: conv.test

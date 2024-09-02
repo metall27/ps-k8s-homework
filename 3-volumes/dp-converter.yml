@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: conv-api
+  name: converter-dp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      components: conv-api
+      components: convenrter
   template:
     metadata:
       labels:
-        components: conv-api
+        components: convenrter
     spec:
       containers:
-      - name: conv-api
-        image: antonlarichev/conv-api:1.0
+      - name: convenrter
+        image: antonlarichev/conv-service:1.0
         ports:
-          - containerPort: 3000
+        - containerPort: 80
         resources:
           limits:
-            memory: 512Mi
-            cpu: 500m
+            cpu: "500m"
+            memory: "1024Mi"
         env:
           - name: AMQP_HOSTNAME
             valueFrom:
@@ -42,10 +42,13 @@ spec:
               secretKeyRef:
                 name: secret-rabbitmq
                 key: AMQP_EXCHANGE
-        volumeMounts:
-          - name: conv-api-data
-            mountPath: /opt/app/uploads
-      volumes:
-        - name: conv-api-data
-          persistentVolumeClaim:
-            claimName: pvc-conv-api
+          - name: AMQP_QUEUE
+            valueFrom:
+              secretKeyRef:
+                name: secret-rabbitmq
+                key: AMQP_QUEUE
+          - name: VITE_DOMAIN
+            valueFrom:
+              configMapKeyRef:
+                name: converter-cm
+                key: VITE_DOMAIN
