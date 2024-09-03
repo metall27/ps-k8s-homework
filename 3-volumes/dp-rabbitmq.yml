@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      components: rabbitmq
+  template:
+    metadata:
+      labels:
+        components: rabbitmq
+    spec:
+      containers:
+      - name: rabbitmq
+        image: rabbitmq:3.12.7
+        ports:
+          - containerPort: 5672
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: 500m
+        env:
+          - name: RABBITMQ_DEFAULT_USER
+            valueFrom:
+              secretKeyRef:
+                name: secret-rabbitmq
+                key: RABBITMQ_DEFAULT_USER
+          - name: RABBITMQ_DEFAULT_PASS
+            valueFrom:
+              secretKeyRef:
+                name: secret-rabbitmq
+                key: RABBITMQ_DEFAULT_PASS
+        volumeMounts:
+          - name: rabbitmq-data
+            mountPath: /var/lib/rabbitmq
+      volumes:
+        - name: rabbitmq-data
+          persistentVolumeClaim:
+            claimName: pvc-rabbitmq

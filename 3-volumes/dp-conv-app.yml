@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conv-app-dp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      components: conv-app
+  template:
+    metadata:
+      labels:
+        components: conv-app
+    spec:
+      containers:
+      - name: conv-app
+        image: antonlarichev/conv-app:1.2
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+
+
+      #   volumeMounts:
+      #     - name: converter-config
+      #       mountPath: /etc/test
+      #       readOnly: true      
+      # volumes:
+      #   - name: converter-config
+      #     ConfigMap:
+      #       name: converter-cm
