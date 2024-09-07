@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.ingress.name }}
+#  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/add-base-url: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: {{ .Values.ingress.serviceName }}
+            port:
+              number: {{ .Values.convApp.port }}
+      - pathType: Prefix
+        path: /api
+        backend:
+          service:
+            name: {{ .Values.convApi.serviceName }}
+            port:
+              number: {{ .Values.convApi.port }}

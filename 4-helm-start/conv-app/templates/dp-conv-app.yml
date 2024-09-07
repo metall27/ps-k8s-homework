@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.convApp.name }}_dp"
+spec:
+  replicas: {{ .Values.convApp.replicas }}
+  selector:
+    matchLabels:
+      components: {{ .Values.convApp.components }}
+  template:
+    metadata:
+      labels:
+        components: {{ .Values.convApp.components }}
+    spec:
+      containers:
+      - name: {{ .Values.convApp.name }}
+        image: "{{ .Values.convApp.image }}:{{ .Values.convApp.imageTag }}"
+        ports:
+        - containerPort: 80
+        resources:
+          limits: {{ .Values.convApp.limits | toYaml | nindent 12 }}
+
+
+      #   volumeMounts:
+      #     - name: converter-config
+      #       mountPath: /etc/test
+      #       readOnly: true      
+      # volumes:
+      #   - name: converter-config
+      #     ConfigMap:
+      #       name: converter-cm

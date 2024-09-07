@@ -1,0 +1,21 @@
+convApp:
+  name: "conv-app"
+  image: antonlarichev/conv-app
+  imageTag: "1.2"
+  port: 80
+  replicas: 1
+  components: conv-app
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+ingress:
+  name: converter-app-ingress
+  host: conv.test
+  serviceName: svc-conv-app
+convApi:
+  port: 3000
+  serviceName: svc-conv-api
+config:
+  name: converter-cm
+  VITE_DOMAIN: conv.test
+  
