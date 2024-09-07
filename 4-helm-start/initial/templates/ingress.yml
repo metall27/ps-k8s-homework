@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: short-app
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/add-base-url: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: demo.test
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: svc-short-app
+            port:
+              number: 80
+      - pathType: Prefix
+        path: /api
+        backend:
+          service:
+            name: svc-short-api
+            port:
+              number: 3000

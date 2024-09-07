@@ -1,0 +1,10 @@
+app:
+  name: short-app
+  replicas: 1
+  image: ntonlarichev/short-app
+  version: v1.4
+  components: frontend
+  port: 80
+  limits:
+    memory: "512Mi"
+    cpu: "200m"
